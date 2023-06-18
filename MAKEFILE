@@ -1,0 +1,2 @@
+diagonalize:
+  gcc -Wall matrix_diagonalization.c -o matrix_diagonalization
