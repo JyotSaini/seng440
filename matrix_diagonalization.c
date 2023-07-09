@@ -26,6 +26,18 @@ void initializeMatrix( double m[N][N] ) {
     }
 }
 
+void initializeIdentityMatrix( double m[N][N] ) {
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            if(i == j) {
+                m[i][j] = 1;
+            } else {
+                m[i][j] = 0;
+            }
+        }    
+    }
+}
+
 
 /**
  *    Multiply an NxN matrix with another NxN matrix, store the output in result[N][N]
@@ -33,7 +45,7 @@ void initializeMatrix( double m[N][N] ) {
 void matrixMultiplication( double m1[N][N], double m2[N][N], double result[N][N] ) {
     for(int i = 0; i < N; i++) {
         for(int j = 0; j < N; j++) {
-            for(int k = 0; k <  N; k++) {
+            for(int k = 0; k < N; k++) {
                 result[i][j] += m1[i][k] * m2[k][j];
             }
         }
@@ -45,25 +57,33 @@ void matrixMultiplication( double m1[N][N], double m2[N][N], double result[N][N]
  *   Diagonalize the input matrix
  */
 void diagonalize( double matrix[N][N] ) {
-    for(int sweep = 0; sweep < 6; sweep++) {
+    for(int sweep = 0; sweep < 1; sweep++) {
         for (int iter_i = 0; iter_i < N - 1; iter_i++) {
             for (int iter_j = iter_i + 1; iter_j < N; iter_j++) {
+                printf("M:\n");
+                printMatrix(matrix);
+
                 double a = matrix[iter_i][iter_i];
                 double b = matrix[iter_i][iter_j];
                 double c = matrix[iter_j][iter_i];
                 double d = matrix[iter_j][iter_j];
 
-                double thetaSum = atan( (c+b) / (d-a) );
-                double thetaDif = atan( (c-b) / (d+a) );
+                printf("abcd: %f\t%f\t%f\t%f\n", a, b, c, d);
+
+                double thetaSum = atan( (c+b) / (d-a) );            // Can d-a ever equal 0?
+                double thetaDif = atan( (c-b) / (d+a) );            // Can d+a ever equal 0?
                 double thetaLeft = (thetaSum - thetaDif) * 0.5;
                 double thetaRight = (thetaSum + thetaDif) * 0.5;
 
-                double rightRotation[N][N] = {{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}};
-                double leftRotation[N][N] = {{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}};
+                double rightRotation[N][N];
+                double leftRotation[N][N];
+
+                initializeIdentityMatrix(rightRotation);
+                initializeIdentityMatrix(leftRotation);
 
                 leftRotation[iter_i][iter_i] = cos(thetaLeft);
-                leftRotation[iter_i][iter_j] = -sin(thetaLeft);
-                leftRotation[iter_j][iter_i] = sin(thetaLeft);
+                leftRotation[iter_i][iter_j] = sin(thetaLeft);
+                leftRotation[iter_j][iter_i] = -sin(thetaLeft);
                 leftRotation[iter_j][iter_j] = cos(thetaLeft);
 
                 rightRotation[iter_i][iter_i] = cos(thetaRight);
@@ -71,10 +91,21 @@ void diagonalize( double matrix[N][N] ) {
                 rightRotation[iter_j][iter_i] = -sin(thetaRight);
                 rightRotation[iter_j][iter_j] = cos(thetaRight);
 
-                double med[N][N] = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+                printf("Left Rotation:\n");
+                printMatrix(leftRotation);
 
-                matrixMultiplication(leftRotation, matrix, med);
-                matrixMultiplication(med, rightRotation, matrix);
+                printf("Right Rotation:\n");
+                printMatrix(rightRotation);
+
+                double intermediate[N][N];
+
+                initializeMatrix(intermediate);
+
+                matrixMultiplication(leftRotation, matrix, intermediate);
+                matrixMultiplication(intermediate, rightRotation, matrix);
+
+                printf("Med:\n");
+                printMatrix(intermediate);
             }
         }
     }
@@ -86,12 +117,15 @@ int main( int argc, char* argv[]) {
 
     for (int elem = 1; elem <= N * N; elem++) {
         double temp;
-        m[(elem - 1) / 4][(elem - 1) % 4] = sscanf(argv[elem], "%lf", &temp);
+        m[(elem - 1) / 4][(elem - 1) % 4] = atof(argv[elem]);
+        // printf("%lf \n", temp);
     }
 
-    for ( int i = 0; i < 100000; i++) {
-        diagonalize( m );
-    }
+    printMatrix(m);
+
+    // for ( int i = 0; i < 100000; i++) {
+    diagonalize( m );
+    // }
 
     printMatrix(m);
 
