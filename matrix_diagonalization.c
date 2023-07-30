@@ -111,7 +111,6 @@ void diagonalize( double matrix[N][N] ) {
 }
 
 int main( int argc, char* argv[]) {
-    time_t startTime = clock();
     double m[N][N];
 
     for (int elem = 1; elem <= N * N; elem++) {
@@ -122,13 +121,17 @@ int main( int argc, char* argv[]) {
 
     // printMatrix(m);
 
+    time_t startTime = clock();
+
     // for ( int i = 0; i < 100000; i++) {
     diagonalize( m );
     // }
 
+    time_t endTime = clock();
+
     printMatrix(m);
 
-    printf("elapsed time: %lf\n", ((double)clock() - startTime)/CLOCKS_PER_SEC);
+    printf("elapsed time: %lf\n", (endTime - startTime)/CLOCKS_PER_SEC);
 
     return 0;
 }
