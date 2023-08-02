@@ -19,6 +19,65 @@ void printMatrix( double matrix[N][N] ) {
     }
 }
 
+#define GET_ABSOLUTES(x, y) { \
+    if (x < 0) { \
+        abs_x = -1 * x; \
+    } else { \
+        abs_x = x; \
+    } \
+    \
+    if (y < 0) { \
+        abs_y = -1 * y; \
+    } else { \
+        abs_y = y; \
+    } \
+}
+
+#define ATAN_APPROXIMATION(angle) { \
+    if (angle < -0.5) { \
+        result = 0.64169321 * angle - 0.15586383446810864; \
+    } else if (angle < 0.5) { \
+        result = 0.95463213 * angle; \
+    } else { \
+        result = 0.64169321 * angle + 0.15586383446810864; \
+    } \
+}
+
+#define PIECEWISE_ATAN(y, x) { \
+    double angle; \
+    double abs_x; \
+    double abs_y; \
+    \
+    GET_ABSOLUTES(x, y); \
+    \
+    if (abs_y > abs_x) { \
+        angle = x / y; \
+        ATAN_APPROXIMATION(angle); \
+        \
+        result = (PI * 0.5) - result; \
+        if (angle < 0) { \
+            result -= PI; \
+        } \
+    } else { \
+        angle = y / x; \
+        ATAN_APPROXIMATION(angle); \
+    } \
+}
+
+#define CALCULATE_THETAS(a, b, c, d) { \
+    double result; \
+    \
+    PIECEWISE_ATAN((c+b), (d-a)); \
+    printf("Actual Value for atan(%lf): %lf\n", (c+b)/(d-a), atan((c+b)/(d-a))); \
+    printf("Predicted Value for atan(%lf): %lf\n\n", (c+b)/(d-a), result); \
+    double thetaSum = result; \
+    PIECEWISE_ATAN((c-b), (d+a)); \
+    double thetaDif = result; \
+    \
+    thetaLeft = (thetaSum - thetaDif) * 0.5; \
+    thetaRight = (thetaSum + thetaDif) * 0.5; \
+}
+
 #define PIECEWISE_COSINE(x) { \
     if (x < -0.8 * PI) { \
         y = 0.30330605 * x - 0.07788022627558189; \
@@ -52,16 +111,6 @@ void printMatrix( double matrix[N][N] ) {
         y = -0.30774876 * x + 1.5155580463340925; \
     } else { \
         y = -0.87252321 * x + 2.7673232360072513; \
-    } \
-}
-
-#define PIECEWISE_ATAN(x) { \
-    if (x < -0.5) { \
-        y = 0.64169321 * x - 0.15586383446810864; \
-    } else if (x < 0.5) { \
-        y = 0.95463213 * x; \
-    } else { \
-        y = 0.64169321 * x + 0.15586383446810864; \
     } \
 }
 
@@ -169,55 +218,27 @@ void diagonalize( double matrix[N][N] ) {
     for (int sweep = 0; sweep < 6; sweep++) {
         for (int iter_i = 0; iter_i < N - 1; iter_i++) {
             for (int iter_j = iter_i + 1; iter_j < N; iter_j++) {
-                // printf("M:\n");
-                // printMatrix(matrix);
-
                 double a = matrix[iter_i][iter_i];
                 double b = matrix[iter_i][iter_j];
                 double c = matrix[iter_j][iter_i];
                 double d = matrix[iter_j][iter_j];
 
-                // printf("abcd: %f\t%f\t%f\t%f\n", a, b, c, d);
-
-                double thetaSum = atan( (c+b) / (d-a) );            // Can d-a ever equal 0?
-                double thetaDif = atan( (c-b) / (d+a) );            // Can d+a ever equal 0?
-                double thetaLeft = (thetaSum - thetaDif) * 0.5;
-                double thetaRight = (thetaSum + thetaDif) * 0.5;
-
-                printf("Theta Left:\n");
-                printf("%f\n", thetaLeft);
-
-                printf("Theta Right:\n");
-                printf("%f\n", thetaRight);
-
+                double thetaLeft;
+                double thetaRight;
                 double rightRotation[N][N];
                 double leftRotation[N][N];
+
+                CALCULATE_THETAS(a, b, c, d);
 
                 INITIALIZE_IDENTITY_MATRIX(rightRotation);
                 INITIALIZE_IDENTITY_MATRIX(leftRotation);
 
                 CALCULATE_ROTATIONS(iter_i, iter_j);
-                // leftRotation[iter_i][iter_i] = cos(thetaLeft);
-                leftRotation[iter_i][iter_j] = -sin(thetaLeft);
-                leftRotation[iter_j][iter_i] = sin(thetaLeft);
-                // leftRotation[iter_j][iter_j] = cos(thetaLeft);
-                // rightRotation[iter_i][iter_i] = cos(thetaRight);
-                rightRotation[iter_i][iter_j] = sin(thetaRight);
-                rightRotation[iter_j][iter_i] = -sin(thetaRight);
-                // rightRotation[iter_j][iter_j] = cos(thetaRight);
-
-                // printf("Left Rotation:\n");
-                // printMatrix(leftRotation);
-
-                // printf("Right Rotation:\n");
-                // printMatrix(rightRotation);
 
                 double intermediate[N][N];
 
                 matrixMultiplication(leftRotation, matrix, intermediate);
                 matrixMultiplication(intermediate, rightRotation, matrix);
-
-                // printf("i: %d, j: %d\n", iter_i, iter_j);
             }
         }
     }
@@ -244,7 +265,7 @@ int main( int argc, char* argv[]) {
 
     printMatrix(m);
 
-    printf("elapsed time: %lf\n", (endTime - startTime)/CLOCKS_PER_SEC);
+    printf("elapsed time: %g\n", ((double)(endTime - startTime)/CLOCKS_PER_SEC));
 
     return 0;
 }
