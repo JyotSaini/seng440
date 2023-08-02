@@ -265,7 +265,7 @@ int main( int argc, char* argv[]) {
 
     printMatrix(m);
 
-    printf("elapsed time: %g\n", ((double)(endTime - startTime)/CLOCKS_PER_SEC));
+    printf("elapsed time: %lf\n", ((double)(endTime - startTime))/CLOCKS_PER_SEC);
 
     return 0;
 }
