@@ -68,8 +68,6 @@ void printMatrix( double matrix[N][N] ) {
     double result; \
     \
     PIECEWISE_ATAN((c+b), (d-a)); \
-    printf("Actual Value for atan(%lf): %lf\n", (c+b)/(d-a), atan((c+b)/(d-a))); \
-    printf("Predicted Value for atan(%lf): %lf\n\n", (c+b)/(d-a), result); \
     double thetaSum = result; \
     PIECEWISE_ATAN((c-b), (d+a)); \
     double thetaDif = result; \
@@ -210,38 +208,62 @@ void matrixMultiplication( double m1[N][N], double m2[N][N], double result[N][N]
     MATRIX_MULTIPLICATION();
 }
 
+#define DIAGONALIZATION_ITERATION(iter_i, iter_j) { \
+    double a = matrix[iter_i][iter_i]; \
+    double b = matrix[iter_i][iter_j]; \
+    double c = matrix[iter_j][iter_i]; \
+    double d = matrix[iter_j][iter_j]; \
+    \
+    double thetaLeft; \
+    double thetaRight; \
+    double rightRotation[N][N]; \
+    double leftRotation[N][N]; \
+    \
+    CALCULATE_THETAS(a, b, c, d); \
+    \
+    INITIALIZE_IDENTITY_MATRIX(rightRotation); \
+    INITIALIZE_IDENTITY_MATRIX(leftRotation); \
+    \
+    CALCULATE_ROTATIONS(iter_i, iter_j); \
+    \
+    double intermediate[N][N]; \
+    \
+    matrixMultiplication(leftRotation, matrix, intermediate); \
+    matrixMultiplication(intermediate, rightRotation, matrix); \
+}
+
+#define SWEEP() { \
+    DIAGONALIZATION_ITERATION(0, 1); \
+    DIAGONALIZATION_ITERATION(0, 2); \
+    DIAGONALIZATION_ITERATION(0, 3); \
+    DIAGONALIZATION_ITERATION(1, 2); \
+    DIAGONALIZATION_ITERATION(1, 3); \
+    DIAGONALIZATION_ITERATION(2, 3); \
+}
 
 /**
  *   Diagonalize the input matrix
  */
 void diagonalize( double matrix[N][N] ) {
-    for (int sweep = 0; sweep < 6; sweep++) {
-        for (int iter_i = 0; iter_i < N - 1; iter_i++) {
-            for (int iter_j = iter_i + 1; iter_j < N; iter_j++) {
-                double a = matrix[iter_i][iter_i];
-                double b = matrix[iter_i][iter_j];
-                double c = matrix[iter_j][iter_i];
-                double d = matrix[iter_j][iter_j];
+    double a;
+    double b;
+    double c;
+    double d;
 
-                double thetaLeft;
-                double thetaRight;
-                double rightRotation[N][N];
-                double leftRotation[N][N];
+    double thetaLeft;
+    double thetaRight;
+    double rightRotation[N][N];
+    double leftRotation[N][N];
+    double intermediate[N][N];
 
-                CALCULATE_THETAS(a, b, c, d);
-
-                INITIALIZE_IDENTITY_MATRIX(rightRotation);
-                INITIALIZE_IDENTITY_MATRIX(leftRotation);
-
-                CALCULATE_ROTATIONS(iter_i, iter_j);
-
-                double intermediate[N][N];
-
-                matrixMultiplication(leftRotation, matrix, intermediate);
-                matrixMultiplication(intermediate, rightRotation, matrix);
-            }
-        }
-    }
+    SWEEP();
+    SWEEP();
+    SWEEP();
+    SWEEP();
+    SWEEP();
+    SWEEP();
+    SWEEP();
+    SWEEP();
 }
 
 int main( int argc, char* argv[]) {
