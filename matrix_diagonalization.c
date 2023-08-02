@@ -171,8 +171,27 @@ void printMatrix( double matrix[N][N] ) {
     matrix[3][3] = 1; \
 }
 
+#define ASSIGN_MATRIX_VALS(m1, m2) { \
+    m1[0][0] = m2[0][0]; \
+    m1[0][1] = m2[0][1]; \
+    m1[0][2] = m2[0][2]; \
+    m1[0][3] = m2[0][3]; \
+    m1[1][0] = m2[1][0]; \
+    m1[1][1] = m2[1][1]; \
+    m1[1][2] = m2[1][2]; \
+    m1[1][3] = m2[1][3]; \
+    m1[2][0] = m2[2][0]; \
+    m1[2][1] = m2[2][1]; \
+    m1[2][2] = m2[2][2]; \
+    m1[2][3] = m2[2][3]; \
+    m1[3][0] = m2[3][0]; \
+    m1[3][1] = m2[3][1]; \
+    m1[3][2] = m2[3][2]; \
+    m1[3][3] = m2[3][3]; \
+}
+
 #define MATRIX_MULTIPLICATION_ELEMENT(row_num, col_num, element) { \
-    result[row_num][col_num] += m1[row_num][element] * m2[element][col_num]; \
+    matrix[row_num][col_num] += m1[row_num][element] * m2[element][col_num]; \
 }
 
 #define MATRIX_MULTIPLICATION_COLUMN(row_num, col_num) { \
@@ -193,19 +212,28 @@ void printMatrix( double matrix[N][N] ) {
  *    Multiply an NxN matrix with another NxN matrix, store the output in result[N][N]
  */
 #define MATRIX_MULTIPLICATION() { \
-    INITIALIZE_MATRIX(result); \
+    double m1[N][N]; \
+    double m2[N][N]; \
+    \
+    ASSIGN_MATRIX_VALS(m1, leftRotation); \
+    ASSIGN_MATRIX_VALS(m2, matrix); \
+    \
+    INITIALIZE_MATRIX(matrix); \
     \
     MATRIX_MULTIPLICATION_ROW(0) \
     MATRIX_MULTIPLICATION_ROW(1) \
     MATRIX_MULTIPLICATION_ROW(2) \
     MATRIX_MULTIPLICATION_ROW(3) \
-}
-
-/**
- *    Multiply an NxN matrix with another NxN matrix, store the output in result[N][N]
- */
-void matrixMultiplication( double m1[N][N], double m2[N][N], double result[N][N] ) {
-    MATRIX_MULTIPLICATION();
+    \
+    ASSIGN_MATRIX_VALS(m1, matrix); \
+    ASSIGN_MATRIX_VALS(m2, rightRotation); \
+    \
+    INITIALIZE_MATRIX(matrix); \
+    \
+    MATRIX_MULTIPLICATION_ROW(0) \
+    MATRIX_MULTIPLICATION_ROW(1) \
+    MATRIX_MULTIPLICATION_ROW(2) \
+    MATRIX_MULTIPLICATION_ROW(3) \
 }
 
 #define DIAGONALIZATION_ITERATION(iter_i, iter_j) { \
@@ -216,8 +244,8 @@ void matrixMultiplication( double m1[N][N], double m2[N][N], double result[N][N]
     \
     double thetaLeft; \
     double thetaRight; \
-    double rightRotation[N][N]; \
     double leftRotation[N][N]; \
+    double rightRotation[N][N]; \
     \
     CALCULATE_THETAS(a, b, c, d); \
     \
@@ -226,10 +254,8 @@ void matrixMultiplication( double m1[N][N], double m2[N][N], double result[N][N]
     \
     CALCULATE_ROTATIONS(iter_i, iter_j); \
     \
-    double intermediate[N][N]; \
     \
-    matrixMultiplication(leftRotation, matrix, intermediate); \
-    matrixMultiplication(intermediate, rightRotation, matrix); \
+    MATRIX_MULTIPLICATION(); \
 }
 
 #define SWEEP() { \
