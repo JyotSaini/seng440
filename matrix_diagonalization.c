@@ -246,6 +246,7 @@ void printMatrix( double matrix[N][N] ) {
     double thetaRight; \
     double leftRotation[N][N]; \
     double rightRotation[N][N]; \
+    double intermediate[N][N]; \
     \
     CALCULATE_THETAS(a, b, c, d); \
     \
@@ -271,19 +272,6 @@ void printMatrix( double matrix[N][N] ) {
  *   Diagonalize the input matrix
  */
 void diagonalize( double matrix[N][N] ) {
-    double a;
-    double b;
-    double c;
-    double d;
-
-    double thetaLeft;
-    double thetaRight;
-    double rightRotation[N][N];
-    double leftRotation[N][N];
-    double intermediate[N][N];
-
-    SWEEP();
-    SWEEP();
     SWEEP();
     SWEEP();
     SWEEP();
