@@ -344,7 +344,7 @@ int main( int argc, char* argv[]) {
     int m[N][N];
 
     for (int elem = 1; elem <= N * N; elem++) {
-        matrixRead[(elem - 1) / 4][(elem - 1) % 4] = atof(argv[elem]) * INTEGER_ONE;
+        matrixRead[(elem - 1) / 4][(elem - 1) % 4] = (int) (atof(argv[elem]) * INTEGER_ONE);
     }
 
     time_t startTime = clock();
