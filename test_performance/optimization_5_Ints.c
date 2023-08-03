@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include <stdio.h>
 #include <time.h>
 
@@ -42,7 +43,7 @@
 void printMatrix(int matrix[N][N]) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            printf("%s%d%s", matrix[i][j] < 0 ? "" : " ", matrix[i][j], (j < N - 1) ? ",\t" : "\n");
+            printf( "%s%d%s", matrix[i][j] < 0?"":" ", matrix[i][j], (j<N-1)? ",\t":"\n" );  //TODO
         }
     }
 }
@@ -263,6 +264,9 @@ void printMatrix(int matrix[N][N]) {
     MATRIX_MULTIPLICATION_COLUMN(row_num, 3)                \
 }
 
+/**
+ *    Multiply an NxN matrix with another NxN matrix, store the output in result[N][N]
+ */
 #define MATRIX_MULTIPLICATION() {                           \
     int m1[N][N];                                           \
     int m2[N][N];                                           \
@@ -313,6 +317,9 @@ void printMatrix(int matrix[N][N]) {
     DIAGONALIZATION_ITERATION(2, 3);                        \
 }
 
+/**
+ *   Diagonalize the input matrix
+ */
 void diagonalize(int matrix[N][N]) {
     int a;
     int b;
@@ -323,6 +330,7 @@ void diagonalize(int matrix[N][N]) {
     int thetaRight;
     int rightRotation[N][N];
     int leftRotation[N][N];
+    int intermediate[N][N];
 
     SWEEP();
     SWEEP();
@@ -332,12 +340,15 @@ void diagonalize(int matrix[N][N]) {
     SWEEP();
 }
 
-int main(int argc, char* argv[]) {
-    int matrixRead[N][N];
+int main() {
+    int matrixRead[N][N] = {{31, 77, -11, 26},
+                            {-42, 14, 79, -53},
+                            {-68, -10, 45, 90},
+                            {34, 16, 38, -19}};
     int m[N][N];
 
     for (int elem = 1; elem <= N * N; elem++) {
-        matrixRead[(elem - 1) / 4][(elem - 1) % 4] = (int) (atof(argv[elem]) * INTEGER_ONE);
+        matrixRead[(elem - 1) / 4][(elem - 1) % 4] *= INTEGER_ONE;
     }
 
     time_t startTime = clock();
