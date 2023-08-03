@@ -341,20 +341,20 @@ void diagonalize(int matrix[N][N]) {
 }
 
 int main( int argc, char* argv[]) {
+    int matrixRead[N][N];
     int m[N][N];
 
     for (int elem = 1; elem <= N * N; elem++) {
-        m[(elem - 1) / 4][(elem - 1) % 4] = atof(argv[elem]) * INTEGER_ONE;
+        matrixRead[(elem - 1) / 4][(elem - 1) % 4] = atof(argv[elem]) * INTEGER_ONE;
     }
-
-    // printMatrix(m);
 
     time_t startTime = clock();
 
-    // for ( int i = 0; i < 100000; i++) {
-    diagonalize(m);
-    NORMALIZE_MATRIX(m);
-    // }
+    for ( int i = 0; i < 100000; i++) {
+        ASSIGN_MATRIX_VALS(m, matrixRead)
+        diagonalize(m);
+        NORMALIZE_MATRIX(m);
+    }
 
     time_t endTime = clock();
 
