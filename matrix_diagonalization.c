@@ -330,7 +330,6 @@ void diagonalize(int matrix[N][N]) {
     int thetaRight;
     int rightRotation[N][N];
     int leftRotation[N][N];
-    int intermediate[N][N];
 
     SWEEP();
     SWEEP();
