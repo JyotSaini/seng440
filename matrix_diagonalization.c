@@ -237,16 +237,10 @@ void printMatrix( double matrix[N][N] ) {
 }
 
 #define DIAGONALIZATION_ITERATION(iter_i, iter_j) { \
-    double a = matrix[iter_i][iter_i]; \
-    double b = matrix[iter_i][iter_j]; \
-    double c = matrix[iter_j][iter_i]; \
-    double d = matrix[iter_j][iter_j]; \
-    \
-    double thetaLeft; \
-    double thetaRight; \
-    double leftRotation[N][N]; \
-    double rightRotation[N][N]; \
-    double intermediate[N][N]; \
+    a = matrix[iter_i][iter_i]; \
+    b = matrix[iter_i][iter_j]; \
+    c = matrix[iter_j][iter_i]; \
+    d = matrix[iter_j][iter_j]; \
     \
     CALCULATE_THETAS(a, b, c, d); \
     \
@@ -272,6 +266,19 @@ void printMatrix( double matrix[N][N] ) {
  *   Diagonalize the input matrix
  */
 void diagonalize( double matrix[N][N] ) {
+    double a;
+    double b;
+    double c;
+    double d;
+
+    double thetaLeft;
+    double thetaRight;
+    double rightRotation[N][N];
+    double leftRotation[N][N];
+    double intermediate[N][N];
+
+    SWEEP();
+    SWEEP();
     SWEEP();
     SWEEP();
     SWEEP();
