@@ -2,17 +2,51 @@ Flat profile:
 
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
- time   seconds   seconds    calls  ns/call  ns/call  name    
- 56.10      4.37     4.37                             atanl
- 28.11      6.56     2.19                             sinl
-  7.32      7.13     0.57  7200000    79.17    79.17  initializeMatrix
-  2.82      7.35     0.22                             __vfp11_veneer_d_r
-  1.93      7.50     0.15                             main
-  1.16      7.59     0.09                             __vfp11_veneer_7_r
-  1.03      7.67     0.08                             __vfp11_veneer_9_r
-  0.90      7.74     0.07                             matrixMultiplication
-  0.64      7.79     0.05                             atanMp
-  0.00      7.79     0.00        1     0.00     0.00  printMatrix
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 14.35     18.64    18.64  7200000     0.00     0.00  matrixMultiplication
+ 13.09     35.64    17.00                             __gcc_personality_v0
+ 10.78     49.65    14.01                             __vfp11_veneer_7_r
+ 10.52     63.31    13.66                             __adddf3
+  7.78     73.41    10.10                             cos
+  7.59     83.27     9.87                             __aeabi_dmul
+  6.81     92.12     8.85                             sinl
+  4.97     98.58     6.46                             atanl
+  3.85    103.58     5.00                             __aeabi_dsub
+  3.50    108.12     4.55                             mcount_internal
+  3.05    112.09     3.97                             __floatdidf
+  1.82    114.45     2.37                             __aeabi_cdcmple
+  1.64    116.59     2.14                             __aeabi_drsub
+  1.36    118.35     1.77                             __aeabi_dcmpeq
+  1.34    120.10     1.75                             __aeabi_dcmplt
+  1.25    121.72     1.62                             __vfp11_veneer_d_r
+  1.04    123.06     1.35  7200000     0.00     0.00  initializeIdentityMatrix
+  0.85    124.16     1.10  7200000     0.00     0.00  initializeMatrix
+  0.81    125.21     1.05                             __gnu_mcount_nc
+  0.47    125.83     0.62                             __aeabi_dcmpgt
+  0.44    126.40     0.58                             __cmpdf2
+  0.28    126.76     0.36                             __vfp11_veneer_b_r
+  0.27    127.11     0.35                             __vfp11_veneer_9_r
+  0.24    127.42     0.31                             __aeabi_ddiv
+  0.19    127.67     0.25                             bsloww2
+  0.18    127.90     0.23                             __aeabi_dcmpge
+  0.17    128.12     0.22                             __vfp11_veneer_3_r
+  0.15    128.31     0.19                             __vfp11_veneer_5
+  0.14    128.49     0.18                             __vfp11_veneer_1
+  0.14    128.67     0.18                             __vfp11_veneer_5_r
+  0.12    128.83     0.16                             __vfp11_veneer_1_r
+  0.12    128.99     0.16                             atanMp
+  0.11    129.13     0.14                             __vfp11_veneer_0
+  0.10    129.26     0.13                             __vfp11_veneer_2
+  0.10    129.39     0.13                             __vfp11_veneer_4
+  0.09    129.51     0.12   100000     0.00     0.00  diagonalize
+  0.08    129.61     0.10                             __aeabi_cdrcmple
+  0.06    129.69     0.08                             __ltdf2
+  0.06    129.77     0.08                             __vfp11_veneer_3
+  0.03    129.82     0.05                             monstartup
+  0.03    129.86     0.04        1    40.00   160.00  main
+  0.02    129.88     0.03                             __fixdfsi
+  0.02    129.90     0.02                             __aeabi_dcmple
+  0.00    129.90     0.00        1     0.00     0.00  printMatrix
 
  %         the percentage of the total running time of the
 time       program used by this function.
@@ -50,41 +84,149 @@ notice and this notice are preserved.
 		     Call graph (explanation follows)
 
 
-granularity: each sample hit covers 4 byte(s) for 0.13% of 7.79 seconds
+granularity: each sample hit covers 2 byte(s) for 0.01% of 129.90 seconds
 
 index % time    self  children    called     name
-                              100001             atanl [1]
-[1]     63.4    4.37    0.57       0+100001  atanl [1]
-                0.57    0.00 7200000/7200000     initializeMatrix [3]
-                0.00    0.00       1/1           printMatrix [10]
-                              100001             atanl [1]
+                                                 <spontaneous>
+[1]     17.5    1.62   21.09                 __vfp11_veneer_d_r [1]
+               18.64    1.10 7200000/7200000     matrixMultiplication [2]
+                1.35    0.00 7200000/7200000     initializeIdentityMatrix [17]
+-----------------------------------------------
+               18.64    1.10 7200000/7200000     __vfp11_veneer_d_r [1]
+[2]     15.2   18.64    1.10 7200000         matrixMultiplication [2]
+                1.10    0.00 7200000/7200000     initializeMatrix [18]
 -----------------------------------------------
                                                  <spontaneous>
-[2]     28.1    2.19    0.00                 sinl [2]
------------------------------------------------
-                0.57    0.00 7200000/7200000     atanl [1]
-[3]      7.3    0.57    0.00 7200000         initializeMatrix [3]
+[3]     13.1   17.00    0.00                 __gcc_personality_v0 [3]
 -----------------------------------------------
                                                  <spontaneous>
-[4]      2.8    0.22    0.00                 __vfp11_veneer_d_r [4]
+[4]     10.8   14.01    0.00                 __vfp11_veneer_7_r [4]
 -----------------------------------------------
                                                  <spontaneous>
-[5]      1.9    0.15    0.00                 main [5]
+[5]     10.5   13.66    0.00                 __adddf3 [5]
 -----------------------------------------------
                                                  <spontaneous>
-[6]      1.2    0.09    0.00                 __vfp11_veneer_7_r [6]
+[6]      7.8   10.10    0.00                 cos [6]
 -----------------------------------------------
                                                  <spontaneous>
-[7]      1.0    0.08    0.00                 __vfp11_veneer_9_r [7]
+[7]      7.6    9.87    0.00                 __aeabi_dmul [7]
 -----------------------------------------------
                                                  <spontaneous>
-[8]      0.9    0.07    0.00                 matrixMultiplication [8]
+[8]      6.8    8.85    0.00                 sinl [8]
 -----------------------------------------------
                                                  <spontaneous>
-[9]      0.6    0.05    0.00                 atanMp [9]
+[9]      5.0    6.46    0.00                 atanl [9]
 -----------------------------------------------
-                0.00    0.00       1/1           atanl [1]
-[10]     0.0    0.00    0.00       1         printMatrix [10]
+                                                 <spontaneous>
+[10]     3.8    5.00    0.00                 __aeabi_dsub [10]
+-----------------------------------------------
+                                                 <spontaneous>
+[11]     3.5    4.55    0.00                 mcount_internal [11]
+-----------------------------------------------
+                                                 <spontaneous>
+[12]     3.1    3.97    0.00                 __floatdidf [12]
+-----------------------------------------------
+                                                 <spontaneous>
+[13]     1.8    2.37    0.00                 __aeabi_cdcmple [13]
+-----------------------------------------------
+                                                 <spontaneous>
+[14]     1.6    2.14    0.00                 __aeabi_drsub [14]
+-----------------------------------------------
+                                                 <spontaneous>
+[15]     1.4    1.77    0.00                 __aeabi_dcmpeq [15]
+-----------------------------------------------
+                                                 <spontaneous>
+[16]     1.3    1.75    0.00                 __aeabi_dcmplt [16]
+-----------------------------------------------
+                1.35    0.00 7200000/7200000     __vfp11_veneer_d_r [1]
+[17]     1.0    1.35    0.00 7200000         initializeIdentityMatrix [17]
+-----------------------------------------------
+                1.10    0.00 7200000/7200000     matrixMultiplication [2]
+[18]     0.8    1.10    0.00 7200000         initializeMatrix [18]
+-----------------------------------------------
+                                                 <spontaneous>
+[19]     0.8    1.05    0.00                 __gnu_mcount_nc [19]
+-----------------------------------------------
+                                                 <spontaneous>
+[20]     0.5    0.62    0.00                 __aeabi_dcmpgt [20]
+-----------------------------------------------
+                                                 <spontaneous>
+[21]     0.4    0.58    0.00                 __cmpdf2 [21]
+-----------------------------------------------
+                                                 <spontaneous>
+[22]     0.3    0.36    0.00                 __vfp11_veneer_b_r [22]
+-----------------------------------------------
+                                                 <spontaneous>
+[23]     0.3    0.35    0.00                 __vfp11_veneer_9_r [23]
+-----------------------------------------------
+                                                 <spontaneous>
+[24]     0.2    0.31    0.00                 __aeabi_ddiv [24]
+-----------------------------------------------
+                                                 <spontaneous>
+[25]     0.2    0.25    0.00                 bsloww2 [25]
+-----------------------------------------------
+                                                 <spontaneous>
+[26]     0.2    0.23    0.00                 __aeabi_dcmpge [26]
+-----------------------------------------------
+                                                 <spontaneous>
+[27]     0.2    0.22    0.00                 __vfp11_veneer_3_r [27]
+-----------------------------------------------
+                                                 <spontaneous>
+[28]     0.1    0.19    0.00                 __vfp11_veneer_5 [28]
+-----------------------------------------------
+                                                 <spontaneous>
+[29]     0.1    0.18    0.00                 __vfp11_veneer_1 [29]
+-----------------------------------------------
+                                                 <spontaneous>
+[30]     0.1    0.18    0.00                 __vfp11_veneer_5_r [30]
+-----------------------------------------------
+                0.04    0.12       1/1           __libc_start_main [33]
+[31]     0.1    0.04    0.12       1         main [31]
+                0.12    0.00  100000/100000      diagonalize [38]
+                0.00    0.00       1/1           printMatrix [45]
+-----------------------------------------------
+                                                 <spontaneous>
+[32]     0.1    0.16    0.00                 atanMp [32]
+-----------------------------------------------
+                                                 <spontaneous>
+[33]     0.1    0.00    0.16                 __libc_start_main [33]
+                0.04    0.12       1/1           main [31]
+-----------------------------------------------
+                                                 <spontaneous>
+[34]     0.1    0.16    0.00                 __vfp11_veneer_1_r [34]
+-----------------------------------------------
+                                                 <spontaneous>
+[35]     0.1    0.14    0.00                 __vfp11_veneer_0 [35]
+-----------------------------------------------
+                                                 <spontaneous>
+[36]     0.1    0.13    0.00                 __vfp11_veneer_2 [36]
+-----------------------------------------------
+                                                 <spontaneous>
+[37]     0.1    0.13    0.00                 __vfp11_veneer_4 [37]
+-----------------------------------------------
+                0.12    0.00  100000/100000      main [31]
+[38]     0.1    0.12    0.00  100000         diagonalize [38]
+-----------------------------------------------
+                                                 <spontaneous>
+[39]     0.1    0.10    0.00                 __aeabi_cdrcmple [39]
+-----------------------------------------------
+                                                 <spontaneous>
+[40]     0.1    0.08    0.00                 __ltdf2 [40]
+-----------------------------------------------
+                                                 <spontaneous>
+[41]     0.1    0.08    0.00                 __vfp11_veneer_3 [41]
+-----------------------------------------------
+                                                 <spontaneous>
+[42]     0.0    0.05    0.00                 monstartup [42]
+-----------------------------------------------
+                                                 <spontaneous>
+[43]     0.0    0.03    0.00                 __fixdfsi [43]
+-----------------------------------------------
+                                                 <spontaneous>
+[44]     0.0    0.02    0.00                 __aeabi_dcmple [44]
+-----------------------------------------------
+                0.00    0.00       1/1           main [31]
+[45]     0.0    0.00    0.00       1         printMatrix [45]
 -----------------------------------------------
 
  This table describes the call tree of the program, and was sorted by
@@ -177,7 +319,18 @@ notice and this notice are preserved.
 
 Index by function name
 
-   [6] __vfp11_veneer_7_r      [1] atanl                  [10] printMatrix
-   [7] __vfp11_veneer_9_r      [3] initializeMatrix        [2] sinl
-   [4] __vfp11_veneer_d_r      [5] main
-   [9] atanMp                  [8] matrixMultiplication
+   [5] __adddf3                [3] __gcc_personality_v0    [1] __vfp11_veneer_d_r
+  [13] __aeabi_cdcmple        [19] __gnu_mcount_nc        [32] atanMp
+  [39] __aeabi_cdrcmple       [40] __ltdf2                 [9] atanl
+  [15] __aeabi_dcmpeq         [35] __vfp11_veneer_0       [25] bsloww2
+  [26] __aeabi_dcmpge         [29] __vfp11_veneer_1        [6] cos
+  [20] __aeabi_dcmpgt         [34] __vfp11_veneer_1_r     [38] diagonalize
+  [44] __aeabi_dcmple         [36] __vfp11_veneer_2       [17] initializeIdentityMatrix
+  [16] __aeabi_dcmplt         [41] __vfp11_veneer_3       [18] initializeMatrix
+  [24] __aeabi_ddiv           [27] __vfp11_veneer_3_r     [31] main
+   [7] __aeabi_dmul           [37] __vfp11_veneer_4        [2] matrixMultiplication
+  [14] __aeabi_drsub          [28] __vfp11_veneer_5       [11] mcount_internal
+  [10] __aeabi_dsub           [30] __vfp11_veneer_5_r     [42] monstartup
+  [21] __cmpdf2                [4] __vfp11_veneer_7_r     [45] printMatrix
+  [43] __fixdfsi              [23] __vfp11_veneer_9_r      [8] sinl
+  [12] __floatdidf            [22] __vfp11_veneer_b_r
