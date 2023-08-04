@@ -246,7 +246,7 @@ void printMatrix(int matrix[N][N]) {
 }
 
 #define MATRIX_MULTIPLICATION_ELEMENT(row_num, col_num, element) {                                  \
-    matrix[row_num][col_num] += (m1[row_num][element] * (m2[element][col_num]) >> INTEGER_BITS);    \
+    result[row_num][col_num] += (m1[row_num][element] * m2[element][col_num]) >> INTEGER_BITS;      \
 }
 
 #define MATRIX_MULTIPLICATION_COLUMN(row_num, col_num) {    \
@@ -264,23 +264,7 @@ void printMatrix(int matrix[N][N]) {
 }
 
 #define MATRIX_MULTIPLICATION() {                           \
-    int m1[N][N];                                           \
-    int m2[N][N];                                           \
-                                                            \
-    ASSIGN_MATRIX_VALS(m1, leftRotation);                   \
-    ASSIGN_MATRIX_VALS(m2, matrix);                         \
-                                                            \
-    INITIALIZE_MATRIX(matrix);                              \
-                                                            \
-    MATRIX_MULTIPLICATION_ROW(0)                            \
-    MATRIX_MULTIPLICATION_ROW(1)                            \
-    MATRIX_MULTIPLICATION_ROW(2)                            \
-    MATRIX_MULTIPLICATION_ROW(3)                            \
-                                                            \
-    ASSIGN_MATRIX_VALS(m1, matrix);                         \
-    ASSIGN_MATRIX_VALS(m2, rightRotation);                  \
-                                                            \
-    INITIALIZE_MATRIX(matrix);                              \
+    INITIALIZE_MATRIX(result);                              \
                                                             \
     MATRIX_MULTIPLICATION_ROW(0)                            \
     MATRIX_MULTIPLICATION_ROW(1)                            \
@@ -288,48 +272,38 @@ void printMatrix(int matrix[N][N]) {
     MATRIX_MULTIPLICATION_ROW(3)                            \
 }
 
-#define DIAGONALIZATION_ITERATION(iter_i, iter_j) {         \
-    a = matrix[iter_i][iter_i];                             \
-    b = matrix[iter_i][iter_j];                             \
-    c = matrix[iter_j][iter_i];                             \
-    d = matrix[iter_j][iter_j];                             \
-                                                            \
-    CALCULATE_THETAS(a, b, c, d);                           \
-                                                            \
-    INITIALIZE_IDENTITY_MATRIX(rightRotation);              \
-    INITIALIZE_IDENTITY_MATRIX(leftRotation);               \
-                                                            \
-    CALCULATE_ROTATIONS(iter_i, iter_j);                    \
-                                                            \
-    MATRIX_MULTIPLICATION();                                \
-}
-
-#define SWEEP() {                                           \
-    DIAGONALIZATION_ITERATION(0, 1);                        \
-    DIAGONALIZATION_ITERATION(0, 2);                        \
-    DIAGONALIZATION_ITERATION(0, 3);                        \
-    DIAGONALIZATION_ITERATION(1, 2);                        \
-    DIAGONALIZATION_ITERATION(1, 3);                        \
-    DIAGONALIZATION_ITERATION(2, 3);                        \
+void matrixMultiplication(int m1[N][N], int m2[N][N], int result[N][N] ) {
+    MATRIX_MULTIPLICATION();
 }
 
 void diagonalize(int matrix[N][N]) {
-    int a;
-    int b;
-    int c;
-    int d;
+    for (int sweep = 0; sweep < 6; sweep++) {
+        for (int iter_i = 0; iter_i < N - 1; iter_i++) {
+            for (int iter_j = iter_i + 1; iter_j < N; iter_j++) {
+                int a = matrix[iter_i][iter_i];
+                int b = matrix[iter_i][iter_j];
+                int c = matrix[iter_j][iter_i];
+                int d = matrix[iter_j][iter_j];
 
-    int thetaLeft;
-    int thetaRight;
-    int rightRotation[N][N];
-    int leftRotation[N][N];
+                int thetaLeft;
+                int thetaRight;
+                int rightRotation[N][N];
+                int leftRotation[N][N];
 
-    SWEEP();
-    SWEEP();
-    SWEEP();
-    SWEEP();
-    SWEEP();
-    SWEEP();
+                CALCULATE_THETAS(a, b, c, d);
+
+                INITIALIZE_IDENTITY_MATRIX(rightRotation);
+                INITIALIZE_IDENTITY_MATRIX(leftRotation);
+
+                CALCULATE_ROTATIONS(iter_i, iter_j);
+
+                int intermediate[N][N];
+
+                matrixMultiplication(leftRotation, matrix, intermediate);
+                matrixMultiplication(intermediate, rightRotation, matrix);
+            }
+        }
+    }
 }
 
 int main() {
