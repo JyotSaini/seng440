@@ -34,8 +34,16 @@ def piecewise_linear_approximation(x_range, num_segments, segment_breakpoints):
     for model in models:
         coefficients.append(model.coef_)
         offsets.append(model.intercept_)
+        
+    maximum_deviation = 0
+    maximum_gap = 0
+    for predicted, actual in zip(np.nditer(y_pred), np.nditer(y_values)):
+        current_gap = abs(predicted - actual)
+        if current_gap > maximum_gap:
+            maximum_gap = current_gap
+            maximum_deviation = current_gap / abs(actual) * 100
 
-    return x_values, y_pred, coefficients, offsets
+    return x_values, y_pred, coefficients, offsets, maximum_deviation
 
 x_range = (-1 * np.pi, 1 * np.pi)    # Range for the sine function
 num_segments = 7            # Number of segments to approximate the sine function
@@ -50,11 +58,13 @@ y_values = np.sin(x_values)
 # x_range = (-1, 1)
 # x_values = np.linspace(x_range[0], x_range[1], 1000)
 
-x_values, y_approx, coefficients, offsets = piecewise_linear_approximation(x_range, num_segments, segment_breakpoints)
+x_values, y_approx, coefficients, offsets, maximum_deviation = piecewise_linear_approximation(x_range, num_segments, segment_breakpoints)
 
 for coefficient, offset, i in zip(coefficients, offsets, range(len(segment_breakpoints) - 1)):
     print("Segment for range " + str(segment_breakpoints[i]) + ": " + str(segment_breakpoints[i + 1]))
     print(str(coefficient) + "x + " + str(offset))
+    
+print("Maximum deviation from curve: " + str(maximum_deviation))
     
 # Plot the results
 plt.figure(figsize=(10, 7))
